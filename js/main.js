@@ -84,16 +84,33 @@ const toggleAuthDom = () => {
   }
 }
 
+const emailValidate = (email) => {
+  const regExp = /^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/
+  console.log(regExp.test(email));
+  return regExp.test(email)
+}
+
 
 loginForm.addEventListener('submit', (event) => {
   event.preventDefault();
-
-  setUsers.logIn(emailInput.value, passwordInput.value, toggleAuthDom);
+  const email = emailInput.value;
+  const password = passwordInput.value
+  if (emailValidate(email)) {
+    setUsers.logIn(email, password, toggleAuthDom);
+  } else {
+    alert('Введите корректный email')
+  }
 });
 
 loginSignup.addEventListener('click', event => {
   event.preventDefault();
-  setUsers.singUp(emailInput.value, passwordInput.value, toggleAuthDom);
+  const email = emailInput.value;
+  const password = passwordInput.value
+  if (emailValidate(email)) {    
+    setUsers.singUp(email, password, toggleAuthDom);
+  } else {
+    alert('Введите корректный email')
+  }
 });
 
 toggleAuthDom()
