@@ -54,7 +54,7 @@ const setUsers = {
   singUp(email, password, handler) {
     if(!this.getUser(email)) {
       console.log(email, password);
-      const user = {email, password, displayName: email};
+      const user = {email, password, displayName: email.split('@')[0]};
       console.log(user);
       listUsers.push(user)
       this.authorizedUser(user)
