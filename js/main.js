@@ -144,20 +144,19 @@ const emailValidate = (email) => {
 }
 
 const showAllPosts = () => {
-
+  
   let postHTML = '';
 
   setPosts.allPosts.forEach(({ title, text, date, author, comments, like, tags }) => {
-    
     postHTML += `
         <section class="post">
         <div class="post-body">
           <h2 class="post-title">${title}</h2>
           <p class="post-text">${text}</p>
           <div class="tags">${
-            tags.map((tag) => {
+            (tags.map((tag) => {
               return `<a href="#" class="tag">#${tag}</a>`
-            })
+            })).toString().split(',').join('')
           }
           </div>
           <!-- /.tags -->
