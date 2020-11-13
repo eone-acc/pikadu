@@ -22,17 +22,24 @@ const userAvatarElem = document.querySelector('.user-avatar');
 
 const postsWrapper = document.querySelector('.posts');
 
+const buttonNewPost = document.querySelector('.button-new-post');
+const addPostElem = document.querySelector('.add-post');
+
+
+
 const listUsers = [{
     id: '01',
     email: 'demo@saures.ru',
     password: '12345',
-    displayName: 'User1'
+    displayName: 'User1',
+    photo: 'https://n1s2.hsmedia.ru/29/bc/13/29bc13428ff36a011701f7f79c9c1d4c/600x600_1_293cc71e720d7ea10893f01750f6de48@700x700_0xc0a839a2_19499559051479297076.jpeg'
   },
   {
     id: '02',
     email: 'mail2@mail.com',
     password: '12345',
-    displayName: 'User2'
+    displayName: 'User2',
+    photo: 'https://n1s2.hsmedia.ru/29/bc/13/29bc13428ff36a011701f7f79c9c1d4c/600x600_1_293cc71e720d7ea10893f01750f6de48@700x700_0xc0a839a2_19499559051479297076.jpeg'
   },
 ];
 
@@ -102,7 +109,7 @@ const setPosts = {
         'мое',
         'случайность'
       ],
-      author: 'demo@saures.ru',
+      author: {displayName: 'demo', photo: 'https://i.pinimg.com/474x/ab/10/6c/ab106c26403eec0656dd0c419e503fbf.jpg'},
       date: '11.11.2020, 20:54:00',
       like: 15,
       comments: 4
@@ -115,12 +122,18 @@ const setPosts = {
         'мое',
         'случайность'
       ],
-      author: 'mail2@mail.com',
+      author: {displayName: 'user2', photo: 'https://n1s2.hsmedia.ru/29/bc/13/29bc13428ff36a011701f7f79c9c1d4c/600x600_1_293cc71e720d7ea10893f01750f6de48@700x700_0xc0a839a2_19499559051479297076.jpeg'},
       date: '10.11.2020, 20:54:00',
       like: 25,
       comments: 9
     }
   ]
+}
+
+const emailValidate = (email) => {
+  const regExp = /^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/
+  console.log(regExp.test(email));
+  return regExp.test(email)
 }
 
 const toggleAuthDom = () => {
@@ -131,16 +144,21 @@ const toggleAuthDom = () => {
     userElem.style.display = '';
     userNameElem.textContent = user.displayName;
     userAvatarElem.src = user.photo || userAvatarElem.src;
+    buttonNewPost.classList.add('visible');
   } else {
     loginElem.style.display = '';
     userElem.style.display = 'none';
+    buttonNewPost.classList.remove('visible');
+    addPostElem.classList.remove('visible');
+    postsWrapper.classList.add('visible');
   }
 }
 
-const emailValidate = (email) => {
-  const regExp = /^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/
-  console.log(regExp.test(email));
-  return regExp.test(email)
+
+
+const showAddPost = () => {
+  addPostElem.classList.add('visible');
+  postsWrapper.classList.remove('visible');
 }
 
 const showAllPosts = () => {
@@ -157,7 +175,7 @@ const showAllPosts = () => {
           <div class="tags">${
             tags.map((tag) => {
               return `<a href="#" class="tag">#${tag}</a>`
-            })
+            }).join('')
           }
           </div>
           <!-- /.tags -->
@@ -191,10 +209,10 @@ const showAllPosts = () => {
           <!-- /.post-buttons -->
           <div class="post-author">
             <div class="author-about">
-              <a href="#" class="author-username">${author}</a>
+              <a href="#" class="author-username">${author.displayName}</a>
               <span class="post-time">${date}</span>
             </div>
-            <a href="#" class="author-link"><img src="img/avatar.jpeg" alt="avatar" class="author-avatar"></a>
+            <a href="#" class="author-link"><img src="${author.photo || "img/avatar.jpeg"}" alt="avatar" class="author-avatar"></a>
           </div>
           <!-- /.post-author -->
         </div>
@@ -213,7 +231,7 @@ const init = () => {
     event.preventDefault();
     // вешаем класс на меню, когда кликнули по кнопке меню 
     menu.classList.toggle('visible');
-  })
+  });
 
   loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -253,6 +271,19 @@ const init = () => {
 
     setUsers.editUsers(editUsername.value, editPhotoURL.value, toggleAuthDom)
     editContainer.classList.remove('visible');
+  });
+
+  buttonNewPost.addEventListener('click', event => {
+    event.preventDefault();
+    showAddPost()
+  });
+
+  addPostElem.addEventListener('submit', event => {
+    event.preventDefault();
+    const { title, text, tags } = addPostElem.elements;
+    
+
+
   })
 
   showAllPosts();
